@@ -426,6 +426,14 @@ main {
     width: 100%;
   }
 
+  .row__impact-list li {
+    padding-left: 14px;
+  }
+
+  .nav-bio-list {
+    padding-left: 18px;
+  }
+
   .row__year {
     position: static;
     margin-top: var(--space-page-x);
