@@ -391,6 +391,7 @@ main {
 
   .nav-grid {
     height: auto;
+    padding-bottom: 0;
   }
 
   .nav-name,
@@ -408,7 +409,7 @@ main {
   }
 
   .nav-photo img {
-    height: 60px;
+    height: 80px;
   }
 
   main {
