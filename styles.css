@@ -1,0 +1,437 @@
+/* ─── Fonts ─────────────────────────────────────────────── */
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('assets/fonts/ABCFavoritEdu-Regular.woff2') format('woff2'),
+       url('assets/fonts/ABCFavoritEdu-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ABC Favorit';
+  src: url('assets/fonts/ABCFavoritEdu-Light.woff2') format('woff2'),
+       url('assets/fonts/ABCFavoritEdu-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'GT Pressura Mono';
+  src: url('assets/fonts/GT-Pressura-Mono-VF.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Source Serif Pro';
+  src: url('assets/fonts/SourceSerif4-Italic-VF.ttf') format('truetype');
+  font-weight: 200 900;
+  font-style: italic;
+}
+
+/* ─── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+::selection {
+  background: #000;
+  color: #fff;
+}
+
+::-moz-selection {
+  background: #000;
+  color: #fff;
+}
+
+/* ─── Tokens ─────────────────────────────────────────────── */
+:root {
+  /* typography */
+  --font-mono: 'GT Pressura Mono', 'Courier New', monospace;
+  --font-serif: 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+  --text-base: 0.97vw;         /* 14px @ 1440 */
+  --text-serif: 1.11vw;        /* 16px @ 1440 */
+
+  /* color */
+  --color-ink: #000;
+  --color-bg: #F4F4F4;
+
+  /* spacing */
+  --space-page-x: 1.67vw;      /* 24px @ 1440 — horizontal page padding */
+
+  /* layout */
+  /* right edge of column 2 in the 9-col H-toggle grid:
+     padding + col1 + gap + col2, simplified to 2 * (100vw - space-page-x) / 9 */
+  --sidebar-width: calc(2 * (100vw - var(--space-page-x)) / 9);
+
+  /* background image — placeholder path, swap in the real file */
+  --bg-image: none;
+}
+
+/* ─── Base ───────────────────────────────────────────────── */
+body {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: 100;
+  color: var(--color-ink);
+  line-height: 1.5;
+  background-color: var(--color-bg);
+}
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.arrow {
+  margin-left: 0.3vw;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* ─── Column overlay (press H to toggle) ────────────────── */
+.col-overlay {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: var(--space-page-x);
+  padding: 0 var(--space-page-x);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.col-overlay.hidden {
+  display: none;
+}
+
+.col-block {
+  background: rgba(100, 100, 255, 0.08);
+  outline: 1px solid rgba(100, 100, 255, 0.25);
+}
+
+/* ─── Nav (fixed sidebar) ────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  border-right: 1px solid var(--color-ink);
+  z-index: 2;
+}
+
+.nav-grid {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-page-x);
+}
+
+.nav-name,
+.row__title,
+.row__meta-label {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: var(--text-serif);
+}
+
+.nav-role {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+}
+
+.nav-name,
+.row__title {
+  font-size: 1.67vw; /* 24px @ 1440 */
+  line-height: var(--space-page-x); /* 24px @ 1440 — flush, no extra leading */
+}
+
+.nav-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.92vw; /* matches .row__body-top's title-to-body spacing */
+}
+
+.nav-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 1vw;
+  margin-top: 0.92vw; /* matches .row__body-top's title-to-body gap, so this aligns with the project body copy */
+}
+
+.nav-bio a:hover {
+  text-decoration: none;
+}
+
+.nav-bio a {
+  text-decoration: underline;
+}
+
+.nav-bio-interests {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+}
+
+.nav-bio-list {
+  list-style: disc;
+  padding-left: 1.2vw;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+}
+
+/* photo + links pinned to the bottom of the sidebar */
+.nav-footer {
+  position: absolute;
+  left: var(--space-page-x);
+  right: var(--space-page-x);
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-page-x);
+}
+
+.nav-photo {
+  margin-left: auto;
+}
+
+.nav-photo img {
+  display: block;
+  width: auto;
+  /* space-page-x (links' bottom offset) + 3 nav-links lines (0.97vw * 1.5) + 2 gaps (0.3vw) —
+     matches the height from the row's bottom edge up to .nav-links' top, so tops align */
+  height: 6.64vw;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3vw;
+  margin-bottom: var(--space-page-x);
+}
+
+.nav-links a:hover {
+  text-decoration: none;
+}
+
+.nav-links a {
+  text-decoration: underline;
+}
+
+/* ─── Content (scrolls; offset past the fixed sidebar) ──── */
+main {
+  margin-left: var(--sidebar-width);
+}
+
+.row {
+  display: flex;
+  gap: var(--space-page-x);
+  padding: var(--space-page-x);
+}
+
+.row__col--body {
+  position: relative;
+  flex: 1 1 50%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-page-x);
+  min-width: 0;
+}
+
+.row__year {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.row__col--image {
+  flex: 1 1 50%;
+}
+
+.row__col--image img,
+.row__col--image video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1.5px solid #fff;
+}
+
+.row__gradient-fill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: calc(var(--space-page-x) * 1.25);
+  background: linear-gradient(to bottom, rgba(0, 140, 255, 0.1), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1.5px solid #fff;
+}
+
+.row__gradient-fill img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border: none;
+}
+
+.row__body-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.92vw; /* 0.5vw + the leading removed from .row__title's tightened line-height */
+}
+
+
+.row__body-bottom {
+  display: flex;
+  gap: var(--space-page-x);
+}
+
+.row__impact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+  min-width: 0;
+}
+
+.row__impact:has(.row__impact-list) {
+  flex: 1 1 66.67%;
+}
+
+.row__impact:has(.row__meta-list) {
+  flex: 1 1 33.33%;
+}
+
+.row__impact-list {
+  list-style: none;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.row__impact-list li {
+  position: relative;
+  padding-left: 0.9vw;
+}
+
+.row__impact-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+}
+
+.row__meta-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3vw;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.row__meta-list a:hover {
+  text-decoration: none;
+}
+
+.row__meta-list a {
+  text-decoration: underline;
+}
+
+.row__confidential {
+  color: #e05c00;
+}
+
+.row__redacted {
+  opacity: 0.3;
+}
+
+/* divider between rows: a clipped run of repeated glyphs */
+.row-divider {
+  border-top: 1px dotted var(--color-ink);
+}
+
+.nav-bio .row-divider {
+  margin: 0;
+  border-top: none;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--color-ink);
+}
+
+.nav-bio .row-divider::before {
+  content: ':･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧ :･ﾟ✧*:･ﾟ✧';
+}
+
+/* ─── Mobile (≤768px): nav stacks above content, rows stack vertically ── */
+@media (max-width: 768px) {
+  :root {
+    --text-base: 14px;
+    --text-serif: 16px;
+    --space-page-x: 16px;
+  }
+
+  .nav {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-ink);
+  }
+
+  .nav-grid {
+    height: auto;
+  }
+
+  .nav-name,
+  .row__title {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .nav-footer {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin-top: var(--space-page-x);
+  }
+
+  .nav-photo img {
+    height: 60px;
+  }
+
+  main {
+    margin-left: 0;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  /* .row__title and .row__col--image are moved to be direct children of .row
+     by assets/mobile-row-order.js, so DOM order alone gives Title → Image → rest */
+  .row__title,
+  .row__col--image {
+    width: 100%;
+  }
+
+  .row__year {
+    position: static;
+    margin-top: var(--space-page-x);
+  }
+
+  .row__body-bottom {
+    flex-direction: column;
+  }
+}
