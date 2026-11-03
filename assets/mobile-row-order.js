@@ -12,6 +12,7 @@
       row.insertBefore(image, title.nextSibling);
     } else {
       bodyTop.insertBefore(title, bodyTop.firstChild);
+      row.appendChild(image);
     }
   }
 
